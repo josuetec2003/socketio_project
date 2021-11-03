@@ -5,13 +5,29 @@ html(lang="en")
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         link(rel="stylesheet", href="bootstrap/bootstrap.min.css")
+        link(rel="stylesheet", href="css/estilos.css")
         title Chat con socket.io
     body
-        .container
-            .row
-                section.col-4 Chat global
-                section.col-4 Chat privado
-                section.col-4 Lista conectados
+        .container.mt-4
+            .row#area-nickname
+                .col-6.offset-3
+                    h2 Nickname
+                    input#txt-nickname.form-control(placeholder="Elije tu nickname")
+
+            .row#area-mensajes
+                h2#bienvenida
+
+                section.column#col1
+                    input.form-control(placeholder="Tu mensaje aquí")
+                    .mensajes-publicos.caja
+
+                section.column#col2
+                    h4 Mensajes privados
+                    .mensajes-privados.caja
+
+                section.column#col3
+                    h4 Usuarios conectados
+                    .usuarios-conectados.caja
 
         script(src='/socket.io/socket.io.js')
         script(src='js/jquery.min.js')

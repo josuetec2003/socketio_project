@@ -17,6 +17,19 @@ app.get('', (req, res) => {
     res.render('index')
 })
 
+// 
+io.on('connection', socket => {
+    // socket: es el cliente que se conecta al servidor
+    console.log(`Socket conectado: ${socket.id}`)
+
+    // en este bloque de codigo nos comunicamos con los sockets
+    // socket (.emit(), .broadcast.emit(), .broadcast.to().emit())
+    // io = para enviar mensajes a todos
+
+    // comunicar a todos los socket conectados que un nuevo socket se ha unido
+    socket.broadcast.emit('nuevo-usuario', 'Se ha conectado un nuevo usuario')
+})
+
 server.listen(PORT, () => {
     console.log('Server listening...')
 })

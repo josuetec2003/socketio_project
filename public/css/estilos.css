@@ -1,0 +1,23 @@
+#area-mensajes {
+    display: none;
+}
+#col1 {
+    width: 47%;
+}
+#col2 {
+    width: 28%;
+}
+#col3 {
+    width: 19%;
+}
+
+.column {
+    display: inline-block;    
+}
+.caja {
+    border: 1px solid #868688;
+    border-radius: 3px;
+    height: 400px;
+    margin-top: 5px;
+    padding: 5px;
+}
