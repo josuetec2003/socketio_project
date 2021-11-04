@@ -17,17 +17,33 @@ app.get('', (req, res) => {
     res.render('index')
 })
 
+var users = []
+
 // 
 io.on('connection', socket => {
     // socket: es el cliente que se conecta al servidor
-    console.log(`Socket conectado: ${socket.id}`)
+    // console.log(`Socket conectado: ${socket.id}`)
 
     // en este bloque de codigo nos comunicamos con los sockets
     // socket (.emit(), .broadcast.emit(), .broadcast.to().emit())
     // io = para enviar mensajes a todos
 
     // comunicar a todos los socket conectados que un nuevo socket se ha unido
-    socket.broadcast.emit('nuevo-usuario', 'Se ha conectado un nuevo usuario')
+    // socket.broadcast.emit('nuevo-usuario', 'Se ha conectado un nuevo usuario')
+
+    socket.on('nuevo-usuario', nickname => {
+        // validar que no se agreguen nicknames iguales
+        console.log(`Usuario conectado: ${nickname}`)
+        users.push({id: socket.id, nickname: nickname})
+        socket.nickname = nickname
+        io.emit('usuario-io', 1, nickname, users)
+    })
+
+    socket.on('disconnect', () => {
+        users = users.filter(x => x.nickname !== socket.nickname)
+        console.log(`Usuario desconectado: ${socket.nickname}`)
+        io.emit('usuario-io', 0, socket.nickname, users)
+    })
 })
 
 server.listen(PORT, () => {
