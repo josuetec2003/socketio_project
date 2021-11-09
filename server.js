@@ -39,6 +39,24 @@ io.on('connection', socket => {
         io.emit('usuario-io', 1, nickname, users)
     })
 
+    socket.on('usuario-reconectado', nickname => {
+        // validar que no se agreguen nicknames iguales
+        console.log(`Usuario reconectado: ${nickname}`)
+        users.push({id: socket.id, nickname: nickname})
+        socket.nickname = nickname
+        // io.emit('usuario-io', 1, nickname, users)
+    })
+
+    socket.on('nuevo-mensaje', msj => {
+        let msjDestino = `<strong>${socket.nickname}</strong> dice: ${msj}`
+        socket.broadcast.emit('nuevo-mensaje', msjDestino)
+    })
+
+    socket.on('mensaje-privado', (msj, id) => {
+        let msjDestino = `<strong class="responder-privado" data-socket-id="${socket.id}">${socket.nickname}</strong> dice: ${msj}`
+        socket.broadcast.to(id).emit('mensaje-privado', msjDestino)
+    })
+
     socket.on('disconnect', () => {
         users = users.filter(x => x.nickname !== socket.nickname)
         console.log(`Usuario desconectado: ${socket.nickname}`)
